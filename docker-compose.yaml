@@ -1,0 +1,30 @@
+services:
+  postgres-db5:
+    image: postgres:latest
+    container_name: postgres-db5
+    environment:
+      POSTGRES_USER: marko09
+      POSTGRES_PASSWORD: haslo1
+      POSTGRES_DB: product-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin0:
+    image: dpage/pgadmin4
+    container_name: pgadminPRODUCT
+    environment:
+      PGADMIN_DEFAULT_EMAIL: marko9@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin11
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres-db5
+    volumes:
+      - pgadmin_data:/var/lib/pgadminPRODUCT
+
+
+volumes:
+  postgres_data:
+  pgadmin_data:

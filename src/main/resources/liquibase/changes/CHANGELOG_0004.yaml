@@ -1,0 +1,140 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: PRODUCT_SPECIFICATION
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_specification_id
+              - column:
+                  name: dtype
+                  type: varchar(255)
+        - addUniqueConstraint:
+            tableName: PRODUCT_SPECIFICATION
+            columnNames: id
+            constraintName: uq_product_specification_id
+
+  - changeSet:
+      id: 5
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: PRODUCT
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_product_id
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: price
+                  type: double
+              - column:
+                  name: type
+                  type: varchar(255)
+              - column:
+                  name: specification_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_product_specification
+                    references: PRODUCT_SPECIFICATION(id)
+
+  - changeSet:
+      id: 6
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: COMPUTER_SPECIFICATION
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_computer_specification_id
+                    foreignKeyName: fk_computer_product_specification
+                    references: PRODUCT_SPECIFICATION(id)
+              - column:
+                  name: processor_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_computer_processor
+                    references: PROCESSORS(id)
+              - column:
+                  name: ram_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_computer_ram
+                    references: RAMS(id)
+
+  - changeSet:
+      id: 7
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: SMARTPHONE_SPECIFICATION
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_smartphone_specification_id
+                    foreignKeyName: fk_smartphone_product_specification
+                    references: PRODUCT_SPECIFICATION(id)
+              - column:
+                  name: color
+                  type: varchar(255)
+              - column:
+                  name: battery_capacity
+                  type: int
+
+  - changeSet:
+      id: 8
+      author: p.marko
+      changes:
+        - createTable:
+            tableName: SMARTPHONE_ACCESSORIES
+            columns:
+              - column:
+                  name: specification_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_accessory_specification
+                    references: SMARTPHONE_SPECIFICATION(id)
+              - column:
+                  name: accessory_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_accessory_accessory
+                    references: ACCESSORIES(id)
+        - addUniqueConstraint:
+            tableName: SMARTPHONE_ACCESSORIES
+            columnNames: specification_id, accessory_id
+            constraintName: uq_smartphone_accessories_specification_accessory
+
+  - changeSet:
+      id: 9
+      author: p.marko
+      changes:
+        - dropNotNullConstraint:
+            tableName: PRODUCT
+            columnName: specification_id
