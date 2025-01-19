@@ -20,4 +20,33 @@ public abstract class ProductSpecification {
 
     @OneToOne(mappedBy = "specification")
     private Product product;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof ProductSpecification other)) {
+            return false;
+        }
+
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        if (id == null) {
+            return 0;
+        }
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ProductSpecification{" +
+                "id=" + id +
+                ", product=" + product.getId() +
+                '}';
+    }
 }

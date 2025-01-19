@@ -10,12 +10,13 @@ import com.pmarko09.product_service.validation.ProcessorValidation;
 import com.pmarko09.product_service.validation.ProductSpecificationValidation;
 import com.pmarko09.product_service.validation.RamValidation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ComputerSpecificationService {
@@ -26,12 +27,14 @@ public class ComputerSpecificationService {
     private final RamRepository ramRepository;
 
     public List<ComputerSpecificationDto> getAllComputerSpecializations() {
+        log.info("ComputerSpecificationService: fetching all computer specifications");
         return repository.findAllComputerSpecifications().stream()
                 .map(computerSpecificationMapper::toDto)
                 .toList();
     }
 
     public ComputerSpecificationDto getById(Long id) {
+        log.info("ComputerSpecificationService: fetching computer specifications with ID: {}", id);
         ProductSpecification productSpecification = ProductSpecificationValidation.existCheck(repository, id);
         ComputerSpecification computerSpecification = ProductSpecificationValidation.computerSpecificationCheck(productSpecification);
 
@@ -40,11 +43,14 @@ public class ComputerSpecificationService {
 
     @Transactional
     public ComputerSpecificationDto addComputerSpecification(ComputerSpecification computerSpecification) {
+        log.info("ComputerSpecificationService: adding computer specifications with details: {}", computerSpecification);
         return computerSpecificationMapper.toDto(repository.save(computerSpecification));
     }
 
     @Transactional
     public ComputerSpecificationDto assignProcessor(Long processorId, Long computerSpecificationId) {
+        log.info("ComputerSpecificationService: assigning processor with ID: {} to computer specification with ID: {}",
+                processorId, computerSpecificationId);
         Processor processor = ProcessorValidation.existCheck(processorRepository, processorId);
         ProductSpecification productSpecification = ProductSpecificationValidation.existCheck(repository, computerSpecificationId);
         ComputerSpecification computerSpecification = ProductSpecificationValidation.computerSpecificationCheck(productSpecification);
@@ -55,6 +61,8 @@ public class ComputerSpecificationService {
 
     @Transactional
     public ComputerSpecificationDto assignRam(Long ramId, Long computerSpecificationId) {
+        log.info("ComputerSpecificationService: assigning ram with ID: {} to computer specification with ID: {}",
+                ramId, computerSpecificationId);
         Ram ram = RamValidation.existCheck(ramRepository, ramId);
         ProductSpecification productSpecification = ProductSpecificationValidation.existCheck(repository, computerSpecificationId);
         ComputerSpecification computerSpecification = ProductSpecificationValidation.computerSpecificationCheck(productSpecification);
@@ -65,6 +73,7 @@ public class ComputerSpecificationService {
 
     @Transactional
     public void deleteComputerSpecification(Long id) {
+        log.info("ComputerSpecificationService: deleting computer specification with ID: {}", id);
         ProductSpecification productSpecification = ProductSpecificationValidation.existCheck(repository, id);
         ComputerSpecification computerSpecification = ProductSpecificationValidation.computerSpecificationCheck(productSpecification);
 

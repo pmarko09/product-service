@@ -27,6 +27,36 @@ public class SmartphoneSpecification extends ProductSpecification {
     )
     private Set<Accessory> accessories = new HashSet<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof SmartphoneSpecification other)) {
+            return false;
+        }
+
+        return getId() != null && getId().equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        if (getId() == null) {
+            return 0;
+        }
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "SmartphoneSpecification{" +
+                "color='" + color + '\'' +
+                ", batteryCapacity=" + batteryCapacity +
+                ", accessories=" + accessories.stream().map(Accessory::getId).toList() +
+                "} " + super.toString();
+    }
+
     public static void update(SmartphoneSpecification specification, SmartphoneSpecification updatedSpecification) {
         specification.setColor(updatedSpecification.getColor());
         specification.setBatteryCapacity(updatedSpecification.getBatteryCapacity());

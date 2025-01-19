@@ -62,7 +62,12 @@ public class ProductValidation {
             if (product.getSpecification() != null) {
                 throw new InvalidSpecificationException("Cannot assign a specification for products of type ELECTRONICS");
             }
-            product.setSpecification(null);
+        }
+    }
+
+    public static void noSpecificationForElectronicsCheck(Product product) {
+        if (product.getType().equals(ProductType.ELECTRONICS)) {
+            throw new IllegalProductCategoryException("For electronics product there is no further specification");
         }
     }
 }

@@ -22,6 +22,28 @@ public class ComputerSpecification extends ProductSpecification {
     @JoinColumn(name = "ram_id", referencedColumnName = "id")
     private Ram memorySize;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof ComputerSpecification other)) {
+            return false;
+        }
+
+        return getId() != null && getId().equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        if (getId() == null) {
+            return 0;
+        }
+
+        return getClass().hashCode();
+    }
+
     public static void update(ComputerSpecification computerSpecification, ComputerSpecification updateSpec) {
         computerSpecification.setMemorySize(updateSpec.getMemorySize());
         computerSpecification.setProcessor(updateSpec.getProcessor());

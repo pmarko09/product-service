@@ -1,5 +1,6 @@
 package com.pmarko09.product_service.validation;
 
+import com.pmarko09.product_service.exception.accessory.AccessoryBlankNameException;
 import com.pmarko09.product_service.exception.accessory.AccessoryNotFoundException;
 import com.pmarko09.product_service.exception.accessory.IllegalAccessoryNameException;
 import com.pmarko09.product_service.model.entity.Accessory;
@@ -23,7 +24,7 @@ public class AccessoryValidation {
 
     public static void accessoryNameBlank(Accessory accessory) {
         if (accessory.getName() == null || accessory.getName().isEmpty()) {
-            throw new IllegalAccessoryNameException("Accessory name can not be empty");
+            throw new AccessoryBlankNameException();
         }
     }
 }
