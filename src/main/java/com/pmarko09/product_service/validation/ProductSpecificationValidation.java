@@ -26,7 +26,7 @@ public class ProductSpecificationValidation {
 
     public static SmartphoneSpecification smartphoneSpecificationCheck(ProductSpecification productSpecification) {
         if (!(productSpecification instanceof SmartphoneSpecification smartphoneSpecification)) {
-            throw new UnsupportedOperationException("The specified product is not a smartphone specification");
+            throw new UnsupportedOperationException("The specified product specification is not a smartphone specification");
         }
         return smartphoneSpecification;
     }

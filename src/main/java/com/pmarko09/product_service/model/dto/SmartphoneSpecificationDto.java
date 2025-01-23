@@ -9,7 +9,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class SmartphoneSpecificationDto implements ProductSpecificationDto {
     private Long id;
     private Long productId;

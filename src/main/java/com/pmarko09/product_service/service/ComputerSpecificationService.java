@@ -26,13 +26,24 @@ public class ComputerSpecificationService {
     private final ProcessorRepository processorRepository;
     private final RamRepository ramRepository;
 
-    public List<ComputerSpecificationDto> getAllComputerSpecializations() {
+    /**
+     * Retrieves all computer specifications from the repository.
+     *
+     * @return List of ComputerSpecificationDto containing all computer specifications
+     */
+    public List<ComputerSpecificationDto> getAllComputerSpecifications() {
         log.info("ComputerSpecificationService: fetching all computer specifications");
         return repository.findAllComputerSpecifications().stream()
                 .map(computerSpecificationMapper::toDto)
                 .toList();
     }
 
+    /**
+     * Finds a specific computer specification by its unique identifier.
+     *
+     * @param id The unique identifier of the computer specification
+     * @return ComputerSpecificationDto representing the found specification
+     */
     public ComputerSpecificationDto getById(Long id) {
         log.info("ComputerSpecificationService: fetching computer specifications with ID: {}", id);
         ProductSpecification productSpecification = ProductSpecificationValidation.existCheck(repository, id);
@@ -41,12 +52,25 @@ public class ComputerSpecificationService {
         return computerSpecificationMapper.toDto(computerSpecification);
     }
 
+    /**
+     * Adds a new computer specification to the repository.
+     *
+     * @param computerSpecification The ComputerSpecification entity to be added
+     * @return ComputerSpecificationDto of the newly created specification
+     */
     @Transactional
     public ComputerSpecificationDto addComputerSpecification(ComputerSpecification computerSpecification) {
         log.info("ComputerSpecificationService: adding computer specifications with details: {}", computerSpecification);
         return computerSpecificationMapper.toDto(repository.save(computerSpecification));
     }
 
+    /**
+     * Assigns a processor to an existing computer specification.
+     *
+     * @param processorId             The unique identifier of the processor to assign
+     * @param computerSpecificationId The unique identifier of the computer specification
+     * @return ComputerSpecificationDto with the updated processor
+     */
     @Transactional
     public ComputerSpecificationDto assignProcessor(Long processorId, Long computerSpecificationId) {
         log.info("ComputerSpecificationService: assigning processor with ID: {} to computer specification with ID: {}",
@@ -59,6 +83,13 @@ public class ComputerSpecificationService {
         return computerSpecificationMapper.toDto(repository.save(computerSpecification));
     }
 
+    /**
+     * Assigns RAM to an existing computer specification.
+     *
+     * @param ramId                   The unique identifier of the RAM to assign
+     * @param computerSpecificationId The unique identifier of the computer specification
+     * @return ComputerSpecificationDto with the updated memory size
+     */
     @Transactional
     public ComputerSpecificationDto assignRam(Long ramId, Long computerSpecificationId) {
         log.info("ComputerSpecificationService: assigning ram with ID: {} to computer specification with ID: {}",
@@ -71,6 +102,11 @@ public class ComputerSpecificationService {
         return computerSpecificationMapper.toDto(repository.save(computerSpecification));
     }
 
+    /**
+     * Deletes a computer specification from the repository.
+     *
+     * @param id The unique identifier of the computer specification to be deleted
+     */
     @Transactional
     public void deleteComputerSpecification(Long id) {
         log.info("ComputerSpecificationService: deleting computer specification with ID: {}", id);

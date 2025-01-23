@@ -22,6 +22,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -154,6 +155,22 @@ public class ProductServiceExceptionHandler extends ResponseEntityExceptionHandl
     protected ResponseEntity<ErrorMessageDto> handleAccessoryBlankNameException(AccessoryBlankNameException ex) {
         ErrorMessageDto bodyResponse = new ErrorMessageDto(ex.getMessage(), LocalDateTime.now(), HttpStatus.BAD_REQUEST);
         log.error("Error occurred: {}", ex.getMessage());
+        return new ResponseEntity<>(bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<ErrorMessageDto> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String message = String.format(
+                "Invalid value '%s' for parameter '%s'. Allowed values are: %s",
+                ex.getValue(),
+                ex.getName(),
+                ex.getRequiredType().isEnum()
+                        ? Arrays.toString(ex.getRequiredType().getEnumConstants())
+                        : "N/A"
+        );
+
+        ErrorMessageDto bodyResponse = new ErrorMessageDto(message, LocalDateTime.now(), HttpStatus.BAD_REQUEST);
+        log.error("Error occurred: {}", message);
         return new ResponseEntity<>(bodyResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

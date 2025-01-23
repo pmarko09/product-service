@@ -13,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service class for Processor entities.
+ *
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,12 @@ public class ProcessorService {
     private final ProcessorRepository processorRepository;
     private final ProcessorMapper processorMapper;
 
+    /**
+     * Fetches all processor entities.
+     *
+     * @param pageable Pagination information.
+     * @return A list of ProcessorDto objects.
+     */
     public List<ProcessorDto> getAllProcessors(Pageable pageable) {
         log.info("ProcessorService: fetching all processors");
         return processorRepository.findAllProcessors(pageable).stream()
@@ -28,6 +38,12 @@ public class ProcessorService {
                 .toList();
     }
 
+    /**
+     * Adds a new processor entity.
+     *
+     * @param processor The processor entity to add.
+     * @return The added ProcessorDto object.
+     */
     @Transactional
     public ProcessorDto addProcessor(Processor processor) {
         log.info("ProcessorService: adding processor with details: {}", processor);
@@ -35,6 +51,13 @@ public class ProcessorService {
         return processorMapper.toDto(processorRepository.save(processor));
     }
 
+    /**
+     * Edits an existing processor entity.
+     *
+     * @param id The ID of the processor entity to edit.
+     * @param newProcessor The new details for the processor entity.
+     * @return The edited ProcessorDto object.
+     */
     @Transactional
     public ProcessorDto editProcessor(Long id, Processor newProcessor) {
         log.info("ProcessorService: editing processor with ID: {} with details: {}", id, newProcessor);
@@ -43,6 +66,11 @@ public class ProcessorService {
         return processorMapper.toDto(processorRepository.save(processor));
     }
 
+    /**
+     * Deletes an existing processor entity.
+     *
+     * @param id The ID of the processor entity to delete.
+     */
     @Transactional
     public void deleteProcessor(Long id) {
         log.info("ProcessorService: deleting processor with ID: {}", id);

@@ -15,6 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service class for Product entities.
+ * Handles CRUD operations of products.
+ *
+ */
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,6 +30,12 @@ public class ProductService {
     private final ProductSpecificationRepository productSpecificationRepository;
     private final ProductMapper productMapper;
 
+    /**
+     * Retrieves all products with pagination.
+     *
+     * @param pageable Pagination information.
+     * @return A list of ProductDto objects.
+     */
     public List<ProductDto> getAllProducts(Pageable pageable) {
         log.info("ProductService: fetching all products");
         return productRepository.findAllProducts(pageable).stream()
@@ -31,6 +43,12 @@ public class ProductService {
                 .toList();
     }
 
+    /**
+     * Retrieves products by type.
+     *
+     * @param type The type of the product.
+     * @return A list of ProductDto objects.
+     */
     public List<ProductDto> getByType(ProductType type) {
         log.info("ProductService: fetching products by type: {}", type);
         ProductValidation.productCategoryCheck(type);
@@ -39,18 +57,37 @@ public class ProductService {
                 .toList();
     }
 
+    /**
+     * Retrieves a product by its ID.
+     *
+     * @param id The ID of the product.
+     * @return A ProductDto object.
+     */
     public ProductDto getProductById(Long id) {
         log.info("ProductService: fetching product by ID: {}", id);
         Product product = ProductValidation.productExists(productRepository, id);
         return productMapper.toDto(product);
     }
 
+    /**
+     * Retrieves a product by its name.
+     *
+     * @param productName The name of the product.
+     * @return A ProductDto object.
+     */
     public ProductDto getProductByName(String productName) {
         log.info("ProductService: fetching product by name: {}", productName);
-        Product product = ProductValidation.productNameExistCheck(productRepository, productName);
+        String normalizedProductName = ProductValidation.productNameNormalizer(productName);
+        Product product = ProductValidation.productNameExistCheck(productRepository, normalizedProductName);
         return productMapper.toDto(product);
     }
 
+    /**
+     * Adds a new product.
+     *
+     * @param newProduct The new product to add.
+     * @return A ProductDto object of the added product.
+     */
     @Transactional
     public ProductDto addProduct(Product newProduct) {
         log.info("ProductService: adding product with details: {}", newProduct);
@@ -62,6 +99,13 @@ public class ProductService {
         return productMapper.toDto(productRepository.save(newProduct));
     }
 
+    /**
+     * Edits an existing product.
+     *
+     * @param id            The ID of the product to edit.
+     * @param editedProduct The updated product data.
+     * @return A ProductDto object of the edited product.
+     */
     @Transactional
     public ProductDto editProduct(Long id, Product editedProduct) {
         log.info("ProductService: editing product with ID: {} and details: {}", id, editedProduct);
@@ -71,6 +115,13 @@ public class ProductService {
         return productMapper.toDto(productRepository.save(product));
     }
 
+    /**
+     * Adds a specification to a product.
+     *
+     * @param productId              The ID of the product.
+     * @param productSpecificationId The ID of the product specification.
+     * @return A ProductDto object of the updated product.
+     */
     @Transactional
     public ProductDto addProductSpecification(Long productId, Long productSpecificationId) {
         log.info("ProductService: assigning product specification with ID: {} to product with ID: {}", productSpecificationId, productId);
@@ -86,6 +137,11 @@ public class ProductService {
         return productMapper.toDto(productRepository.save(product));
     }
 
+    /**
+     * Deletes a product by its ID.
+     *
+     * @param id The ID of the product to delete.
+     */
     @Transactional
     public void deleteProduct(Long id) {
         log.info("ProductService: deleting product with ID: {}", id);
