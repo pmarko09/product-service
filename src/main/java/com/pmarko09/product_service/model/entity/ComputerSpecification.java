@@ -48,4 +48,12 @@ public class ComputerSpecification extends ProductSpecification {
         computerSpecification.setMemorySize(updateSpec.getMemorySize());
         computerSpecification.setProcessor(updateSpec.getProcessor());
     }
+
+    @Override
+    public String toString() {
+        return "ComputerSpecification{" +
+                "processor=" + (processor != null ? processor : "null") +
+                ", memorySize=" + (memorySize != null ? memorySize : "null") +
+                "} " + super.toString();
+    }
 }

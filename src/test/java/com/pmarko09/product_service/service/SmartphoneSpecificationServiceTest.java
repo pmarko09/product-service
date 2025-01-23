@@ -37,7 +37,7 @@ public class SmartphoneSpecificationServiceTest {
     }
 
     @Test
-    void getAllSmartphones_DataCorrect_SmartphoneDtosReturned() {
+    void getAllSmartphoneSpecifications_DataCorrect_SmartphoneDtosReturned() {
         log.info("Start test: getAllSmartphones_DataCorrect_SmartphoneDtosReturned");
         Accessory accessory = new Accessory(1L, "case");
         SmartphoneSpecification smartphoneSpecification = new SmartphoneSpecification();
@@ -48,7 +48,7 @@ public class SmartphoneSpecificationServiceTest {
 
         when(repository.findAllSmartphoneSpecifications()).thenReturn(List.of(smartphoneSpecification));
 
-        List<SmartphoneSpecificationDto> result = smartphoneSpecificationService.getAllSmartphones();
+        List<SmartphoneSpecificationDto> result = smartphoneSpecificationService.getAllSmartphoneSpecifications();
 
         assertNotNull(result);
         assertEquals(1L, result.getFirst().getId());

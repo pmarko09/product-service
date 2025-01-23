@@ -52,10 +52,10 @@ public class ComputerSpecificationControllerTest {
         compSpec2.setProcessorName("ABCD");
         List<ComputerSpecificationDto> compSpecList = List.of(compSpec1, compSpec2);
 
-        when(computerSpecificationService.getAllComputerSpecializations()).thenReturn(compSpecList);
+        when(computerSpecificationService.getAllComputerSpecifications()).thenReturn(compSpecList);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/specialization/computer"))
+                        MockMvcRequestBuilders.get("/specification/computer"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -68,7 +68,7 @@ public class ComputerSpecificationControllerTest {
                 .andExpect(jsonPath("$[1].ramSize").value(991))
                 .andExpect(jsonPath("$[1].processorName").value("ABCD"));
 
-        verify(computerSpecificationService).getAllComputerSpecializations();
+        verify(computerSpecificationService).getAllComputerSpecifications();
         log.info("Finish test: getAllComputerSpec_DataCorrect_ReturnStatus200");
     }
 
@@ -84,7 +84,7 @@ public class ComputerSpecificationControllerTest {
         when(computerSpecificationService.getById(1L)).thenReturn(compSpec1);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/specialization/computer/1"))
+                        MockMvcRequestBuilders.get("/specification/computer/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
@@ -114,7 +114,7 @@ public class ComputerSpecificationControllerTest {
         when(computerSpecificationService.addComputerSpecification(comSpec)).thenReturn(compSpecDto1);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/specialization/computer")
+                        MockMvcRequestBuilders.post("/specification/computer")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(compSpecDto1)))
                 .andDo(print())
@@ -140,7 +140,7 @@ public class ComputerSpecificationControllerTest {
         when(computerSpecificationService.assignProcessor(5L, 1L)).thenReturn(compSpecDto1);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/specialization/computer/1/processor/5"))
+                        MockMvcRequestBuilders.post("/specification/computer/1/processor/5"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
@@ -164,7 +164,7 @@ public class ComputerSpecificationControllerTest {
         when(computerSpecificationService.assignRam(5L, 1L)).thenReturn(compSpecDto1);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/specialization/computer/1/ram/5"))
+                        MockMvcRequestBuilders.post("/specification/computer/1/ram/5"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
@@ -177,16 +177,16 @@ public class ComputerSpecificationControllerTest {
     }
 
     @Test
-    void deleteComputerSpecialization_DataCorrect_ReturnStatus200() throws Exception {
-        log.info("Start test: deleteComputerSpecialization_DataCorrect_ReturnStatus200");
+    void deleteComputerSpecification_DataCorrect_ReturnStatus200() throws Exception {
+        log.info("Start test: deleteComputerSpecification_DataCorrect_ReturnStatus200");
         doNothing().when(computerSpecificationService).deleteComputerSpecification(1L);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.delete("/specialization/computer/1"))
+                        MockMvcRequestBuilders.delete("/specification/computer/1"))
                 .andDo(print())
                 .andExpect(status().isOk());
 
         verify(computerSpecificationService).deleteComputerSpecification(1L);
-        log.info("Finish test: deleteComputerSpecialization_DataCorrect_ReturnStatus200");
+        log.info("Finish test: deleteComputerSpecification_DataCorrect_ReturnStatus200");
     }
 }

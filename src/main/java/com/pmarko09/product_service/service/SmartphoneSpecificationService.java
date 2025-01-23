@@ -16,6 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service class for Smartphone Specification entities.
+ * Handles operations related to managing smartphone specifications, such as retrieving, adding, editing, and deleting them.
+ *
+ */
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,13 +31,24 @@ public class SmartphoneSpecificationService {
     private final SmartphoneSpecificationMapper smartphoneSpecificationMapper;
     private final AccessoryRepository accessoryRepository;
 
-    public List<SmartphoneSpecificationDto> getAllSmartphones() {
+    /**
+     * Retrieves all smartphone specifications.
+     *
+     * @return A list of SmartphoneSpecificationDto objects.
+     */
+    public List<SmartphoneSpecificationDto> getAllSmartphoneSpecifications() {
         log.info("SmartphoneSpecificationService: fetching all smartphone specifications");
         return repository.findAllSmartphoneSpecifications().stream()
                 .map(smartphoneSpecificationMapper::toDto)
                 .toList();
     }
 
+    /**
+     * Retrieves a smartphone specification by its ID.
+     *
+     * @param id The ID of the smartphone specification.
+     * @return A SmartphoneSpecificationDto object.
+     */
     public SmartphoneSpecificationDto getById(Long id) {
         log.info("SmartphoneSpecificationService: fetching smartphone specification with ID: {}", id);
         ProductSpecification productSpecification = ProductSpecificationValidation.existCheck(repository, id);
@@ -40,6 +57,12 @@ public class SmartphoneSpecificationService {
         return smartphoneSpecificationMapper.toDto(smartphoneSpecification);
     }
 
+    /**
+     * Adds a new smartphone specification.
+     *
+     * @param smartphoneSpecification The new smartphone specification to add.
+     * @return A SmartphoneSpecificationDto object of the added smartphone specification.
+     */
     @Transactional
     public SmartphoneSpecificationDto addSmartphoneSpecification(SmartphoneSpecification smartphoneSpecification) {
         log.info("SmartphoneSpecificationService: adding smartphone specification");
@@ -47,6 +70,13 @@ public class SmartphoneSpecificationService {
         return smartphoneSpecificationMapper.toDto(repository.save(smartphoneSpecification));
     }
 
+    /**
+     * Adds an accessory to an existing smartphone specification.
+     *
+     * @param smartphoneSpecId The ID of the smartphone specification.
+     * @param accessoryId      The ID of the accessory to add.
+     * @return A SmartphoneSpecificationDto object of the updated smartphone specification.
+     */
     @Transactional
     public SmartphoneSpecificationDto addAccessory(Long smartphoneSpecId, Long accessoryId) {
         log.info("SmartphoneSpecificationService: adding accessory with ID: {} to  smartphone specification with ID: {}",
@@ -59,6 +89,13 @@ public class SmartphoneSpecificationService {
         return smartphoneSpecificationMapper.toDto(repository.save(smartphoneSpecification));
     }
 
+    /**
+     * Edits an existing smartphone specification.
+     *
+     * @param smartphoneSpecId The ID of the smartphone specification to edit.
+     * @param updatedSpec       The updated smartphone specification data.
+     * @return A SmartphoneSpecificationDto object of the edited smartphone specification.
+     */
     @Transactional
     public SmartphoneSpecificationDto editSmartphoneSpecification(Long smartphoneSpecId, SmartphoneSpecification updatedSpec) {
         log.info("SmartphoneSpecificationService: editing smartphone specification with ID: {} with details: {}",
@@ -70,6 +107,11 @@ public class SmartphoneSpecificationService {
         return smartphoneSpecificationMapper.toDto(repository.save(smartphoneSpecification));
     }
 
+    /**
+     * Deletes a smartphone specification by its ID.
+     *
+     * @param id The ID of the smartphone specification to deleted.
+     */
     @Transactional
     public void deleteSmartphoneSpecification(Long id) {
         log.info("SmartphoneSpecificationService: deleting smartphone specification with ID: {}", id);

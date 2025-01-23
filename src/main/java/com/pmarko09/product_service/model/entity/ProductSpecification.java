@@ -46,7 +46,7 @@ public abstract class ProductSpecification {
     public String toString() {
         return "ProductSpecification{" +
                 "id=" + id +
-                ", product=" + product.getId() +
+                ", product=" + (product != null ? product.getId() : "null") +
                 '}';
     }
 }

@@ -45,10 +45,10 @@ public class SmartphoneSpecificationControllerTest {
         smartphoneSpecificationDto.setBatteryCapacity(1000);
         List<SmartphoneSpecificationDto> list = List.of(smartphoneSpecificationDto);
 
-        when(service.getAllSmartphones()).thenReturn(list);
+        when(service.getAllSmartphoneSpecifications()).thenReturn(list);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/specialization/smartphone"))
+                        MockMvcRequestBuilders.get("/specification/smartphone"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -57,7 +57,7 @@ public class SmartphoneSpecificationControllerTest {
                 .andExpect(jsonPath("$[0].productId").value(3L))
                 .andExpect(jsonPath("$[0].batteryCapacity").value(1000));
 
-        verify(service).getAllSmartphones();
+        verify(service).getAllSmartphoneSpecifications();
         log.info("Finish test: getAllSmartphoneSpec_DataCorrect_ReturnStatus200");
     }
 
@@ -73,7 +73,7 @@ public class SmartphoneSpecificationControllerTest {
         when(service.getById(1L)).thenReturn(smartphoneSpecificationDto);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/specialization/smartphone/1"))
+                        MockMvcRequestBuilders.get("/specification/smartphone/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
@@ -101,7 +101,7 @@ public class SmartphoneSpecificationControllerTest {
         when(service.addSmartphoneSpecification(smartphoneSpecification)).thenReturn(smartphoneSpecificationDto);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/specialization/smartphone")
+                        MockMvcRequestBuilders.post("/specification/smartphone")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(smartphoneSpecificationDto)))
                 .andDo(print())
@@ -125,7 +125,7 @@ public class SmartphoneSpecificationControllerTest {
         when(service.addAccessory(1L, 2L)).thenReturn(smartphoneSpecificationDto);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/specialization/smartphone/1/accessory/2"))
+                        MockMvcRequestBuilders.post("/specification/smartphone/1/accessory/2"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
@@ -137,16 +137,16 @@ public class SmartphoneSpecificationControllerTest {
     }
 
     @Test
-    void deleteSmartphoneSpecialization_DataCorrect_ReturnStatus201() throws Exception {
-        log.info("Start test: deleteSmartphoneSpecialization_DataCorrect_ReturnStatus201");
+    void deleteSmartphoneSpecification_DataCorrect_ReturnStatus201() throws Exception {
+        log.info("Start test: deleteSmartphoneSpecification_DataCorrect_ReturnStatus201");
         doNothing().when(service).deleteSmartphoneSpecification(1L);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.delete("/specialization/smartphone/1"))
+                        MockMvcRequestBuilders.delete("/specification/smartphone/1"))
                 .andDo(print())
                 .andExpect(status().isOk());
 
         verify(service).deleteSmartphoneSpecification(1L);
-        log.info("Finish test: deleteSmartphoneSpecialization_DataCorrect_ReturnStatus201");
+        log.info("Finish test: deleteSmartphoneSpecification_DataCorrect_ReturnStatus201");
     }
 }

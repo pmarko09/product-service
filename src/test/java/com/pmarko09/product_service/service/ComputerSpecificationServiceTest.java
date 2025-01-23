@@ -51,7 +51,7 @@ public class ComputerSpecificationServiceTest {
 
         when(repository.findAllComputerSpecifications()).thenReturn(List.of(computerSpecification));
 
-        List<ComputerSpecificationDto> result = computerSpecificationService.getAllComputerSpecializations();
+        List<ComputerSpecificationDto> result = computerSpecificationService.getAllComputerSpecifications();
 
         assertNotNull(result);
         assertEquals(11L, result.getFirst().getId());

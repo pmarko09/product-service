@@ -8,6 +8,7 @@ import com.pmarko09.product_service.repository.ProductRepository;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,15 @@ public class ProductValidation {
     public static Product productNameExistCheck(ProductRepository productRepository, String productName) {
         return productRepository.findByName(productName)
                 .orElseThrow(() -> new ProductNotFoundException("Product name not found"));
+    }
+
+    public static String productNameNormalizer(String productName) {
+        if (productName == null || productName.trim().isEmpty()) {
+            throw new BlankProductNameException("Product name cannot be null or empty");
+        }
+        String normalized = Normalizer.normalize(productName, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        return normalized.toLowerCase().trim();
     }
 
     public static void productCategoryCheck(ProductType type) {
